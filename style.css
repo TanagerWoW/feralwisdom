@@ -109,6 +109,10 @@ main { min-width: 0; padding: 0 32px 96px; }
 
 .cols span:last-child { color: var(--accent); }
 
+/* The same two names, per claim, for the narrow layout where the header above
+   has no columns to sit over. Off here: the header already says it once. */
+.eyebrow { display: none; }
+
 /* The author's note, the one place the site speaks as its author, so it
    belongs to neither column. A quiet card, like a pinned message: the chrome
    carries the identity, the background sets it apart from both columns. */
@@ -670,7 +674,25 @@ time {
 
   /* one column: everything back into document order, the verdict sitting
      just above the panel it titles */
-  .title, .verdict, .says, .means { grid-column: 1; grid-row: auto; }
+  .title, .verdict, .says, .means, .eyebrow { grid-column: 1; grid-row: auto; }
+
+  /* Each claim names its own two halves, since the page header cannot: an
+     eyebrow over the channel name, another over the verdict. Repeated six or
+     seven times down the page, so quiet rather than the headline it is when it
+     appears once at the top. */
+  .eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-dim);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .eyebrow.sims { margin-top: 28px; color: var(--accent); }
+
+  /* the eyebrow is the gap now, and the panel follows its own label */
+  .means { margin-top: 0; }
 
   /* no indent here — 56px of a 390px screen is width the quotes need */
   .means {
