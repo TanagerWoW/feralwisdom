@@ -1,0 +1,712 @@
+/* feralwisdom — Discord-flavoured, hand-written, zero JavaScript. */
+
+/* Inter, SIL Open Font License 1.1 — https://github.com/rsms/inter
+   One variable file covering 100-900 rather than three static weights.
+   Discord's own gg sans is not licensable; Inter is the closest free match. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("inter.woff2") format("woff2");
+}
+
+:root {
+  --bg-side:  #1e1f22;
+  --bg-main:  #313338;
+  --bg-card:  #2b2d31;
+  --bg-hover: #35373c;
+  --text:     #dcddde;
+  --text-dim: #949ba4;
+  --accent:   #d4a05a;
+  --rule:     #3f4147;
+  --elbow:    #4e5058;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--bg-main); }
+
+body {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  background: var(--bg-main);
+  color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.375;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- sidebar ------------------------------------------------------------- */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 0 8px 24px;
+  background: var(--bg-side);
+}
+
+.server {
+  padding: 20px 8px 16px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* The server description, the way Discord shows one under a community
+   server's name: quiet, small, and part of the identity block. */
+.server .blurb {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.45;
+}
+
+.chan {
+  display: block;
+  padding: 6px 8px;
+  margin: 2px 0;
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.chan:hover { background: var(--bg-hover); color: var(--text); }
+
+/* --- main ---------------------------------------------------------------- */
+
+main { min-width: 0; padding: 0 32px 96px; }
+
+.cols {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 32px;
+  max-width: 1500px;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-main);
+  color: var(--text);
+  /* the two column names are the site's whole idea, so they are a headline
+     rather than a caption */
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cols span:last-child { color: var(--accent); }
+
+/* The author's note, the one place the site speaks as its author, so it
+   belongs to neither column. A quiet card, like a pinned message: the chrome
+   carries the identity, the background sets it apart from both columns. */
+.intro {
+  max-width: 760px;
+  margin: 32px 0 12px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  font-size: 0.9375rem;
+}
+
+.claim {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 0 32px;
+  max-width: 1500px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.title {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0 0 20px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.title::before {
+  content: "#";
+  margin-right: 0.15em;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+/* the sims column's answer to the channel name, on the same row so the two
+   columns open as a matched pair */
+.verdict {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0 0 20px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.says { min-width: 0; grid-column: 1; grid-row: 2; }
+.says > .msg + .msg { margin-top: 18px; }
+
+/* these quotes are months apart; without this they read as one conversation */
+.gap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+  color: var(--text-dim);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gap::before,
+.gap::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* --- message ------------------------------------------------------------- */
+
+.msg {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 16px;
+  align-items: start;
+}
+
+.av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  object-fit: cover;
+}
+
+.body { min-width: 0; }
+.body p { margin: 2px 0 0; overflow-wrap: break-word; }
+
+.who { color: var(--c); font-weight: 500; }
+
+.emoji {
+  width: 20px;
+  height: 20px;
+  margin-left: 0.25em;
+  vertical-align: -0.25em;
+}
+
+time {
+  margin-left: 0.5em;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  border-radius: 4px;
+  background: var(--bg-card);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+
+.badge .emoji {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  vertical-align: 0;
+}
+
+/* the reply elbow: a rounded corner drawn from two borders */
+.reply {
+  grid-column: 1 / -1;
+  position: relative;
+  /* without this the nowrap below sets the grid's min-content width and
+     every message in the claim overflows on narrow screens */
+  min-width: 0;
+  padding-left: 2.5rem;
+  margin-bottom: 2px;
+  color: var(--text-dim);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reply::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  width: 1rem;
+  /* overshoots the reply box so the line reaches down toward the avatar */
+  height: calc(50% + 10px);
+  border-left: 2px solid var(--elbow);
+  border-top: 2px solid var(--elbow);
+  border-top-left-radius: 6px;
+}
+
+.reply-who { color: var(--text); font-weight: 500; }
+
+.reacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.react {
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-dim);
+  font-size: 0.875rem;
+}
+
+/* --- the translation ----------------------------------------------------- */
+
+/* The column follows the scroll, open panel or not. Dropping out of sticky
+   while a panel is open sends the card back to the top of the document, so
+   opening one from halfway down the quotes takes it off the screen and the
+   reader has to scroll up to find what they just clicked. A panel taller than
+   the viewport scrolls inside the card instead. */
+.means {
+  grid-column: 2;
+  grid-row: 2;
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--bg-card);
+}
+
+.points { margin: 0; padding-left: 1.1em; }
+.points > li { margin-bottom: 0.9em; }
+.points > li:last-child { margin-bottom: 0; }
+.point { margin: 0; }
+
+/* --- the cue ------------------------------------------------------------- */
+
+/* The closed state of the disclosure. It carries the number and the size of the
+   evidence, because a bare "details" toggle says nothing about whether there is
+   a simulation behind the line or a shrug. */
+.cue {
+  display: block;
+  position: relative;
+  margin-top: 6px;
+  padding: 6px 26px 6px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  color: inherit;
+  cursor: pointer;
+  list-style: none;
+  text-decoration: none;
+}
+
+/* the native disclosure triangle, replaced below by one that rotates */
+.cue::-webkit-details-marker { display: none; }
+
+.cue:hover { border-color: var(--elbow); background: var(--bg-hover); }
+
+.cue::after {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-right: 1.5px solid var(--text-dim);
+  border-bottom: 1.5px solid var(--text-dim);
+  /* right when shut, down when open — the one bit of state the cue carries */
+  transform: rotate(-45deg);
+  transition: transform 120ms ease;
+}
+
+.cue:hover::after { border-color: var(--text); }
+
+.ev[open] > .cue { border-color: var(--elbow); border-bottom-left-radius: 0;
+                   border-bottom-right-radius: 0; }
+.ev[open] > .cue::after { margin-top: -5px; transform: rotate(45deg); }
+
+.cue-headline {
+  display: block;
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.cue-summary {
+  display: block;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+/* --- the evidence panel --------------------------------------------------- */
+
+/* the panel hangs off the bottom of its own cue, so the two read as one box */
+.evidence {
+  padding: 14px 10px 12px;
+  border: 1px solid var(--elbow);
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+/* --- charts --------------------------------------------------------------- */
+
+/* Laid out as a grid rather than drawn as SVG, so the type stays 12px whatever
+   width the column happens to be. --zero is where the baseline falls in the
+   track, as a percentage, and every mark is positioned against the same one. */
+
+.chart { margin: 0; }
+
+.chart .row {
+  display: grid;
+  /* the label gets the room it needs to stay on one line: a row names two
+     runs ("P2 balanced / +20 agi") and wrapping that pair reads as two rows.
+     The track keeps whatever is left, which is more than a dot needs. */
+  grid-template-columns: minmax(64px, 268px) minmax(0, 1fr) 52px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.chart .label a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--text-dim);
+  text-underline-offset: 2px;
+}
+
+.chart .label a:hover { text-decoration-color: var(--accent); }
+
+/* the pair of runs behind the row, under the name of what it measures */
+.chart .label .runs { display: block; color: var(--text-dim); }
+.bars.stacked .row { min-height: 44px; }
+
+/* labels wrap rather than truncate: a cut-off label hides the link that
+   makes the row checkable */
+.chart .label {
+  color: var(--text);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.chart .track { position: relative; }
+
+/* the line the whole figure is about, so it is solid and it is labelled */
+.chart .track::before {
+  content: "";
+  position: absolute;
+  left: var(--zero);
+  top: 0;
+  bottom: 0;
+  border-left: 1.5px solid var(--elbow);
+}
+
+.chart .value {
+  color: var(--text);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.chart figcaption {
+  margin-top: 8px;
+  color: var(--text-dim);
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+/* The path figures are the one thing here that is drawn as SVG, because 500
+   polylines are not a grid of divs. An SVG scales its type with its geometry,
+   which is the problem this file otherwise avoids: in a 390px column the panel
+   titles land near 5px. So these keep a legible minimum width and scroll
+   sideways inside their own box rather than shrinking with the column. */
+.pathsvg .panels { overflow-x: auto; }
+
+.pathsvg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 640px;
+}
+
+.dots .row { min-height: 21px; }
+.dots .track { height: 21px; }
+
+.dots .err {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  min-width: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--text-dim);
+}
+
+/* the 2px surface ring keeps a dot legible where it overlaps its error bar */
+.dots .pt {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border: 2px solid var(--bg-card);
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.dots .group,
+.bars .group {
+  margin: 12px 0 2px;
+  color: var(--text-dim);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dots .zero-label { min-height: 16px; }
+.dots .zero-label .track { height: 16px; }
+
+.dots .zero-label .track > span {
+  position: absolute;
+  bottom: 1px;
+  left: var(--zero);
+  color: var(--text-dim);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* no value column here, so the labels get the room instead */
+.bars .row {
+  grid-template-columns: minmax(72px, 260px) minmax(0, 1fr);
+  min-height: 30px;
+}
+
+.chart + .group { margin-top: 16px; }
+
+.bars .track { height: 30px; }
+
+.bars .fill {
+  position: absolute;
+  top: 5px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--c);
+}
+
+.bars .tag {
+  position: absolute;
+  top: 7px;
+  /* a property rather than an inline `left`, so the narrow rule below can move
+     the whole column without having to out-specify the style attribute */
+  left: var(--at);
+  margin-left: 8px;
+  color: var(--text);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 2px 0 0;
+  padding: 0;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  list-style: none;
+}
+
+.legend li { display: flex; align-items: center; gap: 6px; }
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sw);
+}
+
+
+/* --- method --------------------------------------------------------------- */
+
+.how { margin-top: 14px; }
+
+.how > summary {
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 0.8125rem;
+}
+
+.how > summary:hover { color: var(--text); }
+
+.method {
+  padding-top: 8px;
+  color: var(--text-dim);
+  font-size: 0.875rem;
+}
+
+.method p { margin: 0 0 0.7em; }
+.method p:last-child { margin-bottom: 0; }
+
+.caveats,
+.provenance { margin: 0 0 0.7em; padding-left: 1.1em; }
+.caveats li,
+.provenance li { margin-bottom: 0.35em; }
+.provenance { color: var(--text-dim); font-size: 0.8125rem; }
+.method a { color: var(--accent); }
+.method code { font-size: 0.9em; }
+
+/* A table here is a stat and what it does, so the reading direction is across
+   a row. No vertical rules, and tabular figures so the columns of numbers line
+   up on the decimal point. */
+.evidence table {
+  width: 100%;
+  margin: 0 0 0.9em;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.evidence th,
+.evidence td {
+  padding: 4px 0 4px 10px;
+  text-align: right;
+  font-weight: 400;
+  border-bottom: 1px solid var(--rule);
+}
+
+.evidence th:first-child,
+.evidence td:first-child { padding-left: 0; text-align: left; }
+.evidence tr:first-child th { color: var(--text); }
+
+/* A column of linked stat names should read as names first and links second,
+   the same treatment as the run links on chart labels. */
+.evidence table a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--text-dim);
+  text-underline-offset: 2px;
+}
+.evidence table a:hover { text-decoration-color: var(--accent); }
+.evidence table .base { color: var(--text-dim); font-size: 0.85em; }
+.evidence tr:last-child th,
+.evidence tr:last-child td { border-bottom: 0; }
+
+/* Shown rather than disclosed, so it takes the body colour the Details
+   below it gives up. */
+.readout {
+  margin-top: 14px;
+  font-size: 0.875rem;
+}
+
+.readout a { color: var(--accent); }
+.readout p { margin: 0 0 0.9em; }
+.readout p:last-child { margin-bottom: 0; }
+.readout table + p { margin-top: 0.9em; }
+
+/* --- narrow -------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  body { grid-template-columns: minmax(0, 1fr); }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    display: flex;
+    gap: 4px;
+    padding: 12px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .server {
+    display: flex;
+    align-items: center;
+    padding: 0 12px 0 0;
+    margin: 0;
+    border: 0;
+  }
+
+  /* the strip has no room for a description, same as Discord's mobile rail */
+  .server .blurb { display: none; }
+
+  .chan { white-space: nowrap; }
+
+  main { padding: 0 16px 64px; }
+  .cols { display: none; }
+  .claim { grid-template-columns: minmax(0, 1fr); }
+
+  /* one column: everything back into document order, the verdict sitting
+     just above the panel it titles */
+  .title, .verdict, .says, .means { grid-column: 1; grid-row: auto; }
+
+  /* no indent here — 56px of a 390px screen is width the quotes need */
+  .means {
+    position: static;
+    margin-top: 20px;
+    /* nothing is stuck here, so the panel grows down the page rather than
+       scrolling inside a box the page is already scrolling */
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* A row is about 278px here, and a label column that may grow to 260 or 268
+     takes nearly all of it: the track collapses to a few pixels and the chart
+     stops being a chart. Give every row two lines instead, the label above a
+     full-width track, which is also the only way the bars get enough room to
+     be worth reading on a phone. */
+  .chart .row { row-gap: 3px; }
+  .chart .label { text-align: left; }
+
+  .dots .row { grid-template-columns: minmax(0, 1fr) 52px; }
+  .dots .label { grid-column: 1 / -1; }
+  .dots .zero-label .label { display: none; }
+
+  .bars .row,
+  .bars.stacked .row {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    margin-bottom: 12px;
+  }
+
+  /* the value sits just past the end of its bar, and the 16% of axis the chart
+     reserves for it is only about thirty pixels wide here, so take the rest of
+     the room out of the track and the number lands inside the column */
+  .bars .track { margin-right: 76px; }
+
+  /* a five-column table has no narrow form worth having, so it scrolls in its
+     own box rather than taking the whole page sideways with it */
+  .readout table { display: block; overflow-x: auto; }
+}
